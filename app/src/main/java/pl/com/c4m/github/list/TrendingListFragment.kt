@@ -1,7 +1,6 @@
 package pl.com.c4m.github.list
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -9,17 +8,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_trending_list.*
+import org.koin.android.viewmodel.ext.android.viewModel
 import pl.com.c4m.github.R
 
 class TrendingListFragment : Fragment() {
 
-    private lateinit var viewModel: TrendingViewModel
+    private val viewModel: TrendingViewModel by viewModel()
     private lateinit var repositoryAdapter: RepositoryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this)
-                .get(TrendingViewModel::class.java)
         repositoryAdapter = RepositoryAdapter(layoutInflater)
 
         viewModel.repositories.observe(this, Observer { list ->

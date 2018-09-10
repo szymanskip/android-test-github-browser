@@ -7,6 +7,8 @@ import retrofit2.http.Query
 interface GithubApi {
 
     companion object {
+        const val BASE_URL = "https://api.github.com"
+
         const val SORT_STARS = "stars"
         const val ORDER_ASC = "asc"
         const val ORDER_DESC = "desc"
