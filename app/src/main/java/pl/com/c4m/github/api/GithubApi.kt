@@ -2,6 +2,7 @@ package pl.com.c4m.github.api
 
 import io.reactivex.Single
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface GithubApi {
@@ -24,4 +25,10 @@ interface GithubApi {
             @Query("page") page: Int? = null,
             @Query("per_page") perPage: Int? = null
     ): Single<SearchResponse>
+
+    @GET("/repos/{owner}/{name}")
+    fun getRepository(
+            @Path("owner") owenr: String,
+            @Path("name") name: String
+    ): Single<RepositoryDetails>
 }

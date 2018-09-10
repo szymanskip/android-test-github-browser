@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/repositoryContentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/repositoryNameView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="szymanskip/android-test-github-browser" />
+
+        <TextView
+            android:id="@+id/repositoryDescriptionView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/repositoryNameView"
+            tools:text="Test project" />
+
+        <TextView
+            android:id="@+id/repositoryWatchesCountView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/repositoryStarsCountView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/repositoryLastUpdateView"
+            tools:text="0" />
+
+        <TextView
+            android:id="@+id/repositoryStarsCountView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/repositoryForksCountView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/repositoryWatchesCountView"
+            app:layout_constraintTop_toTopOf="@+id/repositoryWatchesCountView"
+            tools:text="0" />
+
+        <TextView
+            android:id="@+id/repositoryForksCountView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/repositoryStarsCountView"
+            app:layout_constraintTop_toTopOf="@+id/repositoryStarsCountView"
+            tools:text="0" />
+
+        <TextView
+            android:id="@+id/repositoryWatchesLabelView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/watches"
+            app:layout_constraintEnd_toEndOf="@+id/repositoryWatchesCountView"
+            app:layout_constraintStart_toStartOf="@+id/repositoryWatchesCountView"
+            app:layout_constraintTop_toBottomOf="@+id/repositoryWatchesCountView" />
+
+        <TextView
+            android:id="@+id/repositoryStarsLabelView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/stars"
+            app:layout_constraintEnd_toEndOf="@+id/repositoryStarsCountView"
+            app:layout_constraintStart_toStartOf="@+id/repositoryStarsCountView"
+            app:layout_constraintTop_toBottomOf="@+id/repositoryStarsCountView" />
+
+        <TextView
+            android:id="@+id/repositoryForksLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/forks"
+            app:layout_constraintEnd_toEndOf="@+id/repositoryForksCountView"
+            app:layout_constraintStart_toStartOf="@+id/repositoryForksCountView"
+            app:layout_constraintTop_toBottomOf="@+id/repositoryForksCountView" />
+
+        <TextView
+            android:id="@+id/repositoryLastUpdateView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/repositoryDescriptionView"
+            tools:text="Last update: 1 day ago" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/repositoryProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+</FrameLayout>

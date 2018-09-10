@@ -2,6 +2,7 @@ package pl.com.c4m.github
 
 import io.reactivex.Single
 import pl.com.c4m.github.api.GithubApi
+import pl.com.c4m.github.api.RepositoryDetails
 import pl.com.c4m.github.api.RepositoryListing
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,5 +32,9 @@ class RepositoryInteractor(
                 page = page,
                 perPage = perPage)
                 .map { it.items }
+    }
+
+    fun getByName(owner: String, name: String): Single<RepositoryDetails> {
+        return githubApi.getRepository(owner, name)
     }
 }

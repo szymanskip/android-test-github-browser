@@ -25,7 +25,8 @@ val REPOSITORY_DIFF_CALLBACK = object : DiffUtil.ItemCallback<RepositoryListing>
 }
 
 class RepositoryAdapter(
-        private val layoutInflater: LayoutInflater
+        private val layoutInflater: LayoutInflater,
+        private val onItemClick: (RepositoryListing) -> Unit
 ) : PagedListAdapter<RepositoryListing, RecyclerView.ViewHolder>(REPOSITORY_DIFF_CALLBACK) {
 
     var networkState: NetworkState? = null
@@ -48,7 +49,7 @@ class RepositoryAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.layout.item_repository -> RepositoryViewHolder(layoutInflater.inflate(R.layout.item_repository, parent, false))
+            R.layout.item_repository -> RepositoryViewHolder(layoutInflater.inflate(R.layout.item_repository, parent, false), onItemClick)
             R.layout.item_network_state -> NetworkStateViewHolder(layoutInflater.inflate(R.layout.item_network_state, parent, false))
             else -> throw IllegalStateException("Unknown viewType = $viewType")
         }
@@ -81,13 +82,17 @@ class RepositoryAdapter(
     private fun hasExtraRow() = networkState != null && networkState != NetworkState.Success
 }
 
-private class RepositoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+private class RepositoryViewHolder(
+        itemView: View,
+        private val onItemClick: (RepositoryListing) -> Unit
+) : RecyclerView.ViewHolder(itemView) {
     val nameView: TextView = itemView.findViewById(R.id.itemRepositoryNameView)
     val starsView: TextView = itemView.findViewById(R.id.itemRepositoryStarsCountView)
 
     fun bind(item: RepositoryListing) {
         nameView.text = item.fullName
         starsView.text = itemView.context.resources.getQuantityString(R.plurals.stars_count, item.stargazersCount, item.stargazersCount)
+        itemView.setOnClickListener { onItemClick(item) }
     }
 }
 

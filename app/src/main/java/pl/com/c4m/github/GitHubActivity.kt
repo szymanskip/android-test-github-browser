@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity
 import pl.com.c4m.github.list.TrendingListFragment
 
 class GitHubActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_git_hub)
