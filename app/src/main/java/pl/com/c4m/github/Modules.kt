@@ -19,6 +19,6 @@ val mainModule = module {
                 .create(GithubApi::class.java)
     }
     single { RepositoryInteractor(get()) }
-    viewModel { (activity: GitHubActivity) -> TrendingViewModel(get(), Navigator(activity)) }
+    viewModel { TrendingViewModel(get()) }
     viewModel { RepositoryViewModel(get()) }
 }

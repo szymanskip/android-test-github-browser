@@ -1,6 +1,7 @@
 package pl.com.c4m.github.list
 
 import android.arch.lifecycle.Observer
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -11,18 +12,25 @@ import kotlinx.android.synthetic.main.fragment_trending_list.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import pl.com.c4m.github.GitHubActivity
+import pl.com.c4m.github.Navigator
 import pl.com.c4m.github.R
 
 class TrendingListFragment : Fragment() {
 
     private val viewModel: TrendingViewModel by viewModel { parametersOf(context as GitHubActivity) }
     private lateinit var repositoryAdapter: RepositoryAdapter
+    private lateinit var navigator: Navigator
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        navigator = context as Navigator
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         repositoryAdapter = RepositoryAdapter(layoutInflater,
                 onItemClick = { item ->
-                    viewModel.itemClicked(item)
+                    navigator.goToRepository(item.owner.login, item.name)
                 })
 
         viewModel.repositories.observe(this, Observer { list ->

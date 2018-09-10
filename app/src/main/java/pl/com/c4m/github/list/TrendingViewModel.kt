@@ -5,14 +5,12 @@ import android.arch.lifecycle.Transformations.switchMap
 import android.arch.lifecycle.ViewModel
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
-import pl.com.c4m.github.Navigator
 import pl.com.c4m.github.NetworkState
 import pl.com.c4m.github.RepositoryInteractor
 import pl.com.c4m.github.api.RepositoryListing
 
 class TrendingViewModel(
-        interactor: RepositoryInteractor,
-        private val navigator: Navigator
+        interactor: RepositoryInteractor
 ) : ViewModel() {
     private val factory = RepositoriesDataSourceFactory(interactor)
 
@@ -25,8 +23,4 @@ class TrendingViewModel(
                     .build()
 
     val networkState: LiveData<NetworkState> = switchMap(factory.dataSource) { it.networkState }
-
-    fun itemClicked(item: RepositoryListing) {
-        navigator.goToRepository(item.owner.login, item.name)
-    }
 }
