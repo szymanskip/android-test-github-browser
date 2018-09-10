@@ -6,7 +6,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.view.isGone
+import pl.com.c4m.github.NetworkState
+import pl.com.c4m.github.R
 import pl.com.c4m.github.api.RepositoryListing
 
 val REPOSITORY_DIFF_CALLBACK = object : DiffUtil.ItemCallback<RepositoryListing>() {
@@ -22,22 +26,75 @@ val REPOSITORY_DIFF_CALLBACK = object : DiffUtil.ItemCallback<RepositoryListing>
 
 class RepositoryAdapter(
         private val layoutInflater: LayoutInflater
-) : PagedListAdapter<RepositoryListing, RepositoryViewHolder>(REPOSITORY_DIFF_CALLBACK) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder {
-        return RepositoryViewHolder(layoutInflater.inflate(android.R.layout.simple_list_item_1, parent, false))
+) : PagedListAdapter<RepositoryListing, RecyclerView.ViewHolder>(REPOSITORY_DIFF_CALLBACK) {
+
+    var networkState: NetworkState? = null
+        set(value) {
+            val oldValue = field
+            val hadExtraRow = hasExtraRow()
+            field = value
+            val hasExtraRow = hasExtraRow()
+            if (hadExtraRow != hasExtraRow) {
+                if (hadExtraRow) {
+                    notifyItemRemoved(super.getItemCount())
+                } else {
+                    notifyItemInserted(super.getItemCount())
+                }
+            } else if (hasExtraRow && oldValue != value) {
+                notifyItemChanged(itemCount - 1)
+            }
+        }
+
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            R.layout.item_repository -> RepositoryViewHolder(layoutInflater.inflate(R.layout.item_repository, parent, false))
+            R.layout.item_network_state -> NetworkStateViewHolder(layoutInflater.inflate(R.layout.item_network_state, parent, false))
+            else -> throw IllegalStateException("Unknown viewType = $viewType")
+        }
+
     }
 
-    override fun onBindViewHolder(holder: RepositoryViewHolder, position: Int) {
-        getItem(position)?.let { item ->
-            holder.bind(item)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (getItemViewType(position)) {
+            R.layout.item_repository -> {
+                with(holder as RepositoryViewHolder) {
+                    getItem(position)?.let { bind(it) }
+                }
+            }
+            R.layout.item_network_state -> (holder as NetworkStateViewHolder).bind(networkState)
         }
     }
+
+    override fun getItemCount(): Int {
+        return super.getItemCount() + if (hasExtraRow()) 1 else 0
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (hasExtraRow() && position == itemCount - 1) {
+            R.layout.item_network_state
+        } else {
+            R.layout.item_repository
+        }
+    }
+
+    private fun hasExtraRow() = networkState != null && networkState != NetworkState.Success
 }
 
-class RepositoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val nameView: TextView = itemView as TextView
+private class RepositoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    val nameView: TextView = itemView.findViewById(R.id.itemRepositoryNameView)
+    val starsView: TextView = itemView.findViewById(R.id.itemRepositoryStarsCountView)
 
     fun bind(item: RepositoryListing) {
         nameView.text = item.fullName
+        starsView.text = itemView.context.resources.getQuantityString(R.plurals.stars_count, item.stargazersCount, item.stargazersCount)
+    }
+}
+
+private class NetworkStateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private val progressBar: ProgressBar = itemView.findViewById(R.id.itemProgressBar)
+
+    fun bind(networkState: NetworkState?) {
+        progressBar.isGone = networkState != NetworkState.Loading
     }
 }

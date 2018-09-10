@@ -25,6 +25,9 @@ class TrendingListFragment : Fragment() {
         viewModel.repositories.observe(this, Observer { list ->
             repositoryAdapter.submitList(list)
         })
+        viewModel.networkState.observe(this, Observer { state ->
+            repositoryAdapter.networkState = state
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
