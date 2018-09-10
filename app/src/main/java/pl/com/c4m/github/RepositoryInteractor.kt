@@ -6,11 +6,11 @@ import pl.com.c4m.github.api.RepositoryListing
 import java.text.SimpleDateFormat
 import java.util.*
 
-class GetTrendingAndroid(
+class RepositoryInteractor(
         private val githubApi: GithubApi
-) : (Int, Int) -> Single<List<RepositoryListing>> {
+) {
 
-    override fun invoke(page: Int, perPage: Int): Single<List<RepositoryListing>> {
+    fun getTrending(page: Int, perPage: Int): Single<List<RepositoryListing>> {
         val weekAgo = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
                 .also { it.add(Calendar.DAY_OF_MONTH, -7) }
                 .let {

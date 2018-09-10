@@ -147,7 +147,7 @@ data class RepositoryListing(
         @SerializedName("open_issues_count")
         val open_issuesCount: Int,
         @SerializedName("license")
-        val license: String?,
+        val license: License?,
         @SerializedName("forks")
         val forks: Int,
         @SerializedName("open_issues")
@@ -197,4 +197,18 @@ data class Owner(
         val type: String,
         @SerializedName("site_admin")
         val siteAdmin: Boolean
+)
+
+data class License(
+        @SerializedName("key")
+        val key: String,
+        @SerializedName("name")
+        val name: String,
+        @SerializedName("spdx_id")
+        val spdxId: String,
+        @SerializedName("url")
+        val url: String,
+        @SerializedName("node_id")
+        val nodeId: String
+
 )
